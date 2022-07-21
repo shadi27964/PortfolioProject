@@ -152,3 +152,28 @@ Join Portfolio..[covid-vaccinations] vac
 	On dea.location = vac.location
 	and dea.date = vac.date
 where dea.continent is not null 
+
+--Tableau 1: Global Numbers
+
+--Tableau 2:
+SELECT location, SUM(cast(new_deaths as int)) as TotalDeathCount
+FROM Portfolio.dbo.covid_deaths
+WHERE continent is null
+and location not in ('world', 'European Union', 'International', 
+'Upper middle income', 'High income', 'Lower middle income', 'Low income')
+GROUP BY location
+ORDER BY TotalDeathCount Desc
+
+--Tableau3:
+SELECT location, population, max(total_cases) as highest_infection, 
+max((total_cases/population))*100 as percent_population_infected
+FROM Portfolio.dbo.covid_deaths
+GROUP BY location, population
+ORDER BY percent_population_infected Desc
+
+--Tableau4
+SELECT location, population, date, max(total_cases) as highest_infection, 
+max((total_cases/population))*100 as percent_population_infected
+FROM Portfolio.dbo.covid_deaths
+GROUP BY location, population, date
+ORDER BY percent_population_infected Desc
